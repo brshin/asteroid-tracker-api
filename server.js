@@ -30,6 +30,30 @@ app.get('/asteroids', async (req, res) => {
     //console.log(JSON.stringify(rawAsteroids, null, 2));
 });
 
+app.get('/asteroids/:id', async (req, res) => {
+    const asteroidID = req.params.id;
+
+    if (!asteroidID) {
+        return res.json({error: "Mission aborted: No asteroid ID provided"});
+    }
+    
+    try {
+
+        const response = await fetch(`https://api.nasa.gov/neo/rest/v1/neo/${asteroidID}?api_key=j7ASJZKYw91SaZmonl9HCLGACh586lgDAH0MoNYd`)
+
+        const data = await response.json();
+
+        res.json({
+            name: data.name,
+            absoluteMagnitudeH: data.absolute_magnitude_h,
+            potentiallyHazardous: data.is_potentially_hazardous_asteroid
+        });
+    }
+    catch (error) {
+        res.json({error: "Failed to fetch planet data." });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is orbiting on http://localhost:${PORT}'`);
 });
