@@ -3,6 +3,25 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
+
+const favoriteAsteroids = [];
+
+app.post('/asteroids/favorites', (req, res) => {
+    const favoriteAsteroid = req.body;
+
+    if (!favoriteAsteroid) {
+        return res.json({message: "No favorite asteroid data provided."});
+    }
+
+    favoriteAsteroids.push(favoriteAsteroid);
+
+    res.json({
+        message: `${favoriteAsteroid.name} was added to the database.`,
+        updatedArray: favoriteAsteroids
+    });
+});
+
 app.get('/', (req, res) => {
     res.json({ message: "Houston, the Asteroid Tracker server is online!" });
 });
