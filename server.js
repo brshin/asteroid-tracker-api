@@ -7,6 +7,26 @@ app.use(express.json());
 
 let favoriteAsteroids = [];
 
+app.put('/asteroids/favorites/:name', (req, res) => {
+    const asteroidName = req.params.name;
+
+    const note = req.body.note;
+
+    const index = favoriteAsteroids.findIndex(asteroid => asteroid.name === asteroidName);
+
+    if (index === -1) {
+        return res.json({error: 'Asteroid not found in favorites list.'});
+    }
+
+    favoriteAsteroids[index].note = note;
+
+    res.json({
+        message: `Successfully updated ${asteroidName}'s note.`,
+        updatedArray: favoriteAsteroids
+    });
+
+});
+
 app.delete('/asteroids/favorites/:name', (req, res) => {
     const asteroidName = req.params.name;
 
