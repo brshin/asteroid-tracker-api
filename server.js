@@ -5,7 +5,18 @@ const PORT = 3000;
 
 app.use(express.json());
 
-const favoriteAsteroids = [];
+let favoriteAsteroids = [];
+
+app.delete('/asteroids/favorites/:name', (req, res) => {
+    const asteroidName = req.params.name;
+
+    favoriteAsteroids = favoriteAsteroids.filter(asteroid => asteroid.name !== asteroidName);
+
+    res.json({
+        message: `Successful deletion of asteroid ${asteroidName}.`,
+        updatedArray: favoriteAsteroids
+    });
+});
 
 app.post('/asteroids/favorites', (req, res) => {
     const favoriteAsteroid = req.body;
