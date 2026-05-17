@@ -60,7 +60,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/asteroids', async (req, res) => {
-    const response = await fetch('https://api.nasa.gov/neo/rest/v1/feed?start_date=2026-05-11&end_date=2026-05-11&api_key=j7ASJZKYw91SaZmonl9HCLGACh586lgDAH0MoNYd');
+    const rawDate = new Date();
+    const rawISO = rawDate.toISOString();
+    const today = rawISO.split('T')[0];
+
+    const response = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${today}&end_date=${today}&api_key=j7ASJZKYw91SaZmonl9HCLGACh586lgDAH0MoNYd`);
 
     const data = await response.json();
 
@@ -68,7 +72,7 @@ app.get('/asteroids', async (req, res) => {
         return res.json({message: "API failed!", details: data.error.message});
     }
 
-    const rawAsteroids = data.near_earth_objects["2026-05-11"];
+    const rawAsteroids = data.near_earth_objects[today];
 
     const cleanAsteroids = rawAsteroids.map((asteroid) => {
         return {

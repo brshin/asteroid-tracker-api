@@ -17,6 +17,8 @@ function App() {
         <div>
             <h1>Asteroid Dashboard</h1>
 
+            <h2>Today's Asteroids</h2>
+
             {asteroids.map((asteroid) => (
                 <div key={asteroid.name}>
                     <h2>{asteroid.name}</h2>
