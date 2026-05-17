@@ -16,6 +16,15 @@ function App() {
     return (
         <div>
             <h1>Asteroid Dashboard</h1>
+
+            {asteroids.map((asteroid) => (
+                <div key={asteroid.name}>
+                    <h2>{asteroid.name}</h2>
+                    <p>Hazardous: {asteroid.potentiallyHazardous.toString()}</p>
+                </div>
+            ))}
+
+
         </div>
     )
 
