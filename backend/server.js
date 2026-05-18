@@ -9,6 +9,10 @@ app.use(express.json());
 
 let favoriteAsteroids = [];
 
+app.get('/asteroids/favorites', (req, res) => {
+    res.json(favoriteAsteroids);
+});
+
 app.put('/asteroids/favorites/:name', (req, res) => {
     const asteroidName = req.params.name;
 

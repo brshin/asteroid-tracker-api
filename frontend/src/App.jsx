@@ -2,19 +2,27 @@ import { useState, useEffect } from 'react';
 
 function App() {
     const [asteroids, setAsteroids] = useState([]);
+    const [favorites, setFavorites] = useState([]);
 
     useEffect(() => {
         fetch('http://localhost:3000/asteroids')
             .then(res => res.json())
             .then(data => {
-                console.log("Data from backend:", data);
+                console.log("Data from backend (asteroids):", data);
                 setAsteroids(data);
+            })
+            .catch(err => console.error("Network error:", err));
+        
+        fetch('http://localhost:3000/asteroids/favorites')
+            .then(res => res.json())
+            .then(data => {
+                console.log("Data from backend (favorites):", data);
+                setFavorites(data);
             })
             .catch(err => console.error("Network error:", err));
     }, []);
 
     const handleSaveAsteroid = (asteroid) => {
-
         fetch('http://localhost:3000/asteroids/favorites', {
             method: 'POST',
             headers: {
@@ -27,6 +35,7 @@ function App() {
         })
         .then(res => res.json())
         .then(data => console.log("Success! Server says: ", data))
+        .then(setFavorites(prevFavorites => [...prevFavorites, asteroid]))
         .catch(err => console.error("Failed to add:", err));
     };
 
@@ -47,6 +56,13 @@ function App() {
                 </div>
             ))}
 
+            <h2>My Favorite Asteroids</h2>
+
+            {favorites.map((asteroid) => (
+                <div key={asteroid.name}>
+                    <h2>{asteroid.name}</h2>
+                </div>
+            ))}
 
         </div>
     )
